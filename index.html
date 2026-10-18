@@ -27,7 +27,7 @@
         <strong class="hud-zone-name" id="hud-zone-name">Spawn Point</strong>
       </div>
       <div class="hud-actions">
-        <span class="hud-stat" id="hud-gems" title="Projects collected">◆ <b>0</b>/16</span>
+        <span class="hud-stat" id="hud-gems" title="Projects collected">◆ <b>0</b>/19</span>
         <span class="hud-stat" id="hud-trophies" title="Certificates inspected">🏆 <b>0</b>/4</span>
         <button type="button" class="hud-btn" id="hud-restart" title="Restart from spawn">↺</button>
         <button type="button" class="hud-btn hud-btn-exit" data-mode-switch="classic">📄 View as page</button>
@@ -64,20 +64,20 @@
 
   <!-- Navigation -->
   <nav id="navbar">
-    <div class="nav-logo">
+    <a class="nav-logo" href="#hero" aria-label="Back to top">
       <span class="glitch" data-text="AA">&lt;AA/&gt;</span>
-    </div>
+    </a>
     <ul class="nav-links">
-      <li><a href="#hero">Home</a></li>
       <li><a href="#about">About</a></li>
       <li><a href="#skills">Skills</a></li>
+      <li><a href="#liveops">LiveOps</a></li>
       <li><a href="#it">IT</a></li>
       <li><a href="#journey">Journey</a></li>
-      <li><a href="#games">Games</a></li>
-      <li><a href="#studio">In Dev</a></li>
+      <li><a href="#games" data-also="studio">Work</a></li>
       <li><a href="#certificates">Certs</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
+    <button type="button" class="nav-cv" data-cv-open aria-haspopup="dialog">⬇ CV</button>
     <button class="hamburger" id="hamburger" aria-label="Menu">
       <span></span><span></span><span></span>
     </button>
@@ -98,10 +98,9 @@
       </p>
       <div class="hero-buttons">
         <a href="#journey" class="btn btn-primary">View My Work</a>
-        <a href="cv/game-cv.html" class="btn btn-outline" target="_blank" rel="noopener">Game CV</a>
-        <a href="cv/it-cv.html" class="btn btn-outline btn-it" target="_blank" rel="noopener">IT CV</a>
+        <button type="button" class="btn btn-outline" data-cv-open aria-haspopup="dialog">Generate CV</button>
       </div>
-      <p class="hero-cv-note">Two tracks, two CVs — game programming and IT infrastructure.</p>
+      <p class="hero-cv-note">Game, IT, or both in one — pick a CV and it downloads as a PDF.</p>
       <div class="hero-socials">
         <a href="https://github.com/ahmedafifiabodu" target="_blank" aria-label="GitHub">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.1 3.31 9.42 7.9 10.95.58.1.79-.25.79-.56v-2.05c-3.2.7-3.88-1.54-3.88-1.54-.52-1.34-1.28-1.7-1.28-1.7-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.2 1.77 1.2 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.56-.29-5.25-1.28-5.25-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.47.11-3.06 0 0 .97-.31 3.18 1.18a11.07 11.07 0 0 1 5.8 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.77.11 3.06.74.81 1.19 1.84 1.19 3.1 0 4.43-2.7 5.41-5.27 5.69.42.36.79 1.07.79 2.16v3.2c0 .31.21.67.8.56C20.2 21.42 23.5 17.1 23.5 12 23.5 5.65 18.35.5 12 .5z"/></svg>
@@ -265,10 +264,218 @@
             <span class="pill">Narrative Design</span>
             <span class="pill">AI &amp; Combat Systems</span>
             <span class="pill">Multiplayer</span>
+            <span class="pill">LiveOps &amp; Live Services</span>
             <span class="pill">Code Architecture</span>
           </div>
+          <p class="skill-cat-note"><a href="#liveops">See the LiveOps work →</a></p>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- LiveOps Section -->
+  <section id="liveops" class="section it-section lo-section">
+    <div class="container">
+      <h2 class="section-title">Live<span>Ops</span></h2>
+      <p class="section-sub">
+        The part of a game that keeps running after launch — seasons, quests, offers, events and the
+        backend that keeps them honest. I build it once, as a reusable service, and ship it under every game I work on.
+      </p>
+
+      <div class="it-headline">
+        <div class="it-head-meta">
+          <span class="it-role">Live Services &amp; Backend</span>
+          <span class="it-period">Aug 2026 – Present</span>
+        </div>
+        <p class="it-head-desc">
+          I'm a core author of the studio's shared live-services layer: a game-agnostic Unity package plus a
+          C# Cloud Code module on Unity Gaming Services. Designers tune passes, quests, prices and events from
+          config; the server owns every grant, so no client ever mints its own rewards.
+        </p>
+      </div>
+
+      <div class="lo-stats">
+        <div class="lo-stat"><b>28</b><span>runtime modules</span></div>
+        <div class="lo-stat"><b>~1 s</b><span>config edit → player</span></div>
+        <div class="lo-stat"><b>17 → 4</b><span>startup calls</span></div>
+        <div class="lo-stat"><b>280+</b><span>automated tests</span></div>
+      </div>
+
+      <!-- Architecture diagram -->
+      <figure class="it-diagram lo-diagram">
+        <svg viewBox="0 0 920 430" role="img" aria-labelledby="lo-diagram-title lo-diagram-desc">
+          <title id="lo-diagram-title">Live-services architecture</title>
+          <desc id="lo-diagram-desc">
+            Remote Config, the Game Service Admin window and scheduled triggers feed a server-authoritative
+            Cloud Code module, which stores state in Cloud Save, Economy and Leaderboards and serves three
+            games — One State, CUBEX and KEMA — taking raw gameplay events in and pushing state back out.
+          </desc>
+
+          <defs>
+            <marker id="lo-arrow" viewBox="0 0 10 10" refX="9" refY="5"
+                    markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" fill="#5a4a2a"></path>
+            </marker>
+          </defs>
+
+          <g stroke="#5a4a2a" stroke-width="1.6" fill="none" marker-end="url(#lo-arrow)">
+            <path d="M202 90 L268 90"></path>
+            <path d="M202 180 L268 180"></path>
+            <path d="M202 270 L268 270"></path>
+            <path d="M410 330 L410 358"></path>
+          </g>
+          <g stroke="#f59e0b" stroke-opacity="0.7" stroke-width="1.6" fill="none"
+             marker-start="url(#lo-arrow)" marker-end="url(#lo-arrow)">
+            <path d="M552 85 L688 85"></path>
+            <path d="M552 185 L688 185"></path>
+            <path d="M552 285 L688 285"></path>
+          </g>
+          <text x="620" y="36" class="d-sub">events in · state &amp; live push out</text>
+
+          <g class="d-node d-src">
+            <rect x="12" y="60" width="190" height="60" rx="8"></rect>
+            <text x="107" y="86" class="d-title">Remote Config</text>
+            <text x="107" y="104" class="d-sub">catalogs · prices · seasons</text>
+          </g>
+          <g class="d-node d-src">
+            <rect x="12" y="150" width="190" height="60" rx="8"></rect>
+            <text x="107" y="176" class="d-title">Admin Window</text>
+            <text x="107" y="194" class="d-sub">players · catalogs · bans</text>
+          </g>
+          <g class="d-node d-src">
+            <rect x="12" y="240" width="190" height="60" rx="8"></rect>
+            <text x="107" y="266" class="d-title">Triggers</text>
+            <text x="107" y="284" class="d-sub">resets · season reward mail</text>
+          </g>
+
+          <g class="d-node d-core">
+            <rect x="270" y="40" width="280" height="290" rx="10"></rect>
+            <text x="410" y="68" class="d-title">Cloud Code Module</text>
+            <text x="410" y="86" class="d-sub">server-authoritative · one-call bootstrap</text>
+            <text x="410" y="122" class="d-chiptext">Economy · Wallet · Inventory</text>
+            <text x="410" y="148" class="d-chiptext">Store · IAP · Ad rewards</text>
+            <text x="410" y="174" class="d-chiptext">Progression · Season passes</text>
+            <text x="410" y="200" class="d-chiptext">Missions · Login streaks</text>
+            <text x="410" y="226" class="d-chiptext">Mail · Chests · Rewards</text>
+            <text x="410" y="252" class="d-chiptext">Guilds · Leaderboard events</text>
+            <text x="410" y="278" class="d-chiptext">Moderation · Bans</text>
+            <text x="410" y="304" class="d-chiptext">Live updates · Diagnostics</text>
+          </g>
+
+          <g class="d-node d-store">
+            <rect x="270" y="360" width="280" height="56" rx="8"></rect>
+            <text x="410" y="384" class="d-title">UGS Data</text>
+            <text x="410" y="402" class="d-sub">Cloud Save · Economy · Leaderboards</text>
+          </g>
+
+          <g class="d-node d-game">
+            <rect x="690" y="52" width="218" height="66" rx="8"></rect>
+            <text x="799" y="80" class="d-title">One State</text>
+            <text x="799" y="98" class="d-sub">open world · Kashkha Pass</text>
+          </g>
+          <g class="d-node d-game">
+            <rect x="690" y="152" width="218" height="66" rx="8"></rect>
+            <text x="799" y="180" class="d-title">CUBEX</text>
+            <text x="799" y="198" class="d-sub">strategy · dedicated servers</text>
+          </g>
+          <g class="d-node d-game">
+            <rect x="690" y="252" width="218" height="66" rx="8"></rect>
+            <text x="799" y="280" class="d-title">KEMA</text>
+            <text x="799" y="298" class="d-sub">card game · Pharaoh's Pass</text>
+          </g>
+
+          <g class="d-legend">
+            <text x="690" y="360" class="d-legend-h">One backend</text>
+            <text x="690" y="382">3 games on the same core</text>
+            <text x="690" y="402">game-only logic in its own module</text>
+          </g>
+        </svg>
+        <figcaption>Simplified view of the shared live-services layer and the games built on it.</figcaption>
+      </figure>
+
+      <!-- what it covers -->
+      <div class="it-grid">
+        <article class="it-card">
+          <h3><span class="it-icon">🎛️</span> Live Config, No Build</h3>
+          <p>Catalogs, prices and seasons live in Remote Config. A change detector fingerprints them on download
+             and pushes the delta to connected players about a second after a deploy — from the dashboard, the
+             admin window or CI.</p>
+        </article>
+        <article class="it-card">
+          <h3><span class="it-icon">🎟️</span> Seasons &amp; Passes</h3>
+          <p>Free and premium tracks with pass XP, claim one or claim all, premium unlocks and season
+             countdowns. Shipped three ways: One State's Kashkha Pass, CUBEX's cup ladder and KEMA's Pharaoh's Pass.</p>
+        </article>
+        <article class="it-card">
+          <h3><span class="it-icon">📜</span> Missions &amp; Quests</h3>
+          <p>Daily, weekly, monthly and one-off goals. Progress comes from stats the game server reports, not
+             from the client, and rerolls are price-guarded so they can't be farmed.</p>
+        </article>
+        <article class="it-card">
+          <h3><span class="it-icon">📅</span> Retention Loops</h3>
+          <p>Login streaks and daily gifts, mail with send and expiry windows, chests whose contents can be
+             previewed, and a timed guest trial that nudges players to link an account.</p>
+        </article>
+        <article class="it-card">
+          <h3><span class="it-icon">💰</span> Economy &amp; Store</h3>
+          <p>Wallets and inventory owned by the server, first-purchase and limited-time offers, IAP, and
+             rewarded-ad placements drawing from weighted reward pools. Purchases validated server-side
+             (cap, unknown item, insufficient funds).</p>
+        </article>
+        <article class="it-card">
+          <h3><span class="it-icon">🏆</span> Competitive &amp; Social</h3>
+          <p>Guilds with shared missions and guild XP, global, regional and country leaderboards, and scheduled
+             resets that mail podium and rank-bracket rewards to every winner.</p>
+        </article>
+        <article class="it-card">
+          <h3><span class="it-icon">🛡️</span> Ops &amp; Moderation</h3>
+          <p>A Unity editor admin window for the live game: inspect and edit players, edit catalogs with
+             art previews, ban, bulk-delete test accounts, author matchmaking rules and watch match diagnostics.</p>
+        </article>
+        <article class="it-card">
+          <h3><span class="it-icon">📈</span> Observability &amp; Cost</h3>
+          <p>Per-endpoint call stats, crash reports tagged with the last backend call, opt-in usage reports and
+             slow-call logging. Cut a store purchase from ~12 backend requests to 2.</p>
+        </article>
+      </div>
+
+      <!-- per-project -->
+      <div class="lo-projects">
+        <article class="lo-project">
+          <img src="assets/covers/one-state-cover.jpg" alt="One State key art" loading="lazy">
+          <div class="lo-project-body">
+            <h3>One State <small>open-world action · 2024 Studios</small></h3>
+            <ul>
+              <li><b>Kashkha Pass</b> — a 30-tier free/premium season track built on the Progression module, shipped as an app on the in-game phone: claim one or all, unlock with gems, season countdown, reward VFX.</li>
+              <li><b>Server-owned inventory</b> — weapons, ammo and medkits live in the backend; reservations stop in-flight removals double-spending, and world pickups only count once the server confirms.</li>
+              <li><b>Catalog-driven items</b> — item data in catalog custom data, so new gear and pass offers are a config change, not a client patch.</li>
+              <li><b>QA dev app</b> — development builds grant currencies, XP, pass XP, the premium pass or any catalog item from the phone.</li>
+            </ul>
+          </div>
+        </article>
+        <article class="lo-project">
+          <img src="assets/covers/cubex-cover.jpg" alt="CUBEX key art" loading="lazy">
+          <div class="lo-project-body">
+            <h3>CUBEX <small>real-time strategy · 2024 Studios</small></h3>
+            <ul>
+              <li><b>Live balance</b> — card stats and rarity ladders live in config; dedicated servers read each player's cards by UGS id, so a balance pass ships as a deploy.</li>
+              <li><b>Cup ladder &amp; missions</b> — a pass-style progression track, with missions fed by battle stats the match server reports.</li>
+              <li><b>Guilds &amp; boards</b> — guild pages and chat, daily/weekly/season player and guild leaderboards, country boards picked at sign-up, rewards mailed at reset.</li>
+              <li><b>Shop, events &amp; mail</b> — data-driven store, events page and live mail; Matchmaker on Edgegap with reconnect and backfill underneath.</li>
+            </ul>
+          </div>
+        </article>
+      </div>
+
+      <figure class="lo-shot">
+        <div class="lo-shot-row">
+          <img src="assets/covers/kema/06-daily-gifts.jpg" alt="KEMA daily gifts login-streak calendar" loading="lazy">
+          <img src="assets/covers/kema/07-quests.jpg" alt="KEMA daily, weekly and monthly quests" loading="lazy">
+          <img src="assets/covers/kema/08-pharaohs-pass.jpg" alt="KEMA Pharaoh's Pass season track" loading="lazy">
+        </div>
+        <figcaption>The same layer, on screen: KEMA's login-streak calendar, daily/weekly/monthly quests and Pharaoh's Pass — captured from the running build.</figcaption>
+      </figure>
+
     </div>
   </section>
 
@@ -805,6 +1012,57 @@
           </div>
         </div>
 
+        <div class="pub-card wip">
+          <div class="pub-cover">
+            <img src="assets/covers/kema/kema-cover.jpg" alt="KEMA title screen, lobby and match board" loading="lazy">
+            <span class="pub-number">18</span>
+            <span class="pub-flag">In Development</span>
+          </div>
+          <div class="pub-body">
+            <h3>KEMA — The Black Land</h3>
+            <p class="pub-desc">Ancient-Egyptian multiplayer card game for Sana Game Studios. Each player raises a four-level pyramid from land cards under an anti-mirroring rule, over Netcode + Relay. I moved its backend onto our UGS game service — guest and linked accounts, Matchmaker, friends, chat — and built its LiveOps: login streaks, daily/weekly quests, Pharaoh's Pass and a timed-offer store.</p>
+            <div class="pub-tags"><span>Unity 6</span><span>Mobile</span><span>Multiplayer</span><span>UGS</span><span>LiveOps</span></div>
+          </div>
+          <div class="pub-actions">
+            <a href="#liveops" class="pub-btn gameplay">◈ LiveOps</a>
+            <span class="pub-status">Pre-release</span>
+          </div>
+        </div>
+
+        <div class="pub-card wip">
+          <div class="pub-cover">
+            <img src="assets/covers/one-state-cover.jpg" alt="One State key art" loading="lazy">
+            <span class="pub-number">19</span>
+            <span class="pub-flag">In Development</span>
+          </div>
+          <div class="pub-body">
+            <h3>One State</h3>
+            <p class="pub-desc">Open-world third-person mobile action game set in a living city with traffic and pedestrians. I built the UMA character-creation wizard and wardrobe, a server-authoritative inventory where weapons, ammo and pickups live in the backend, the login flow and HUD, and the Kashkha Pass — a 30-tier battle pass delivered as an app on the in-game phone.</p>
+            <div class="pub-tags"><span>Unity 6</span><span>Open World</span><span>UGS Economy</span><span>Battle Pass</span><span>Addressables</span></div>
+          </div>
+          <div class="pub-actions">
+            <a href="#liveops" class="pub-btn gameplay">◈ LiveOps</a>
+            <span class="pub-status">Internal</span>
+          </div>
+        </div>
+
+        <div class="pub-card wip">
+          <div class="pub-cover">
+            <img src="assets/covers/cubex-cover.jpg" alt="CUBEX key art" loading="lazy">
+            <span class="pub-number">20</span>
+            <span class="pub-flag">In Development</span>
+          </div>
+          <div class="pub-body">
+            <h3>CUBEX</h3>
+            <p class="pub-desc">Real-time mobile strategy battler — unit, structure and command cards fought on dedicated servers. I own the meta and backend: UGS Matchmaker on Edgegap with reconnect and backfill, server-authoritative card rarities, the cup-ladder pass, missions, guilds, country leaderboards and a data-driven shop, events and mail — all tunable live without a client build.</p>
+            <div class="pub-tags"><span>Unity 6</span><span>Strategy</span><span>Dedicated Servers</span><span>Cloud Code</span><span>LiveOps</span></div>
+          </div>
+          <div class="pub-actions">
+            <a href="#liveops" class="pub-btn gameplay">◈ LiveOps</a>
+            <span class="pub-status">Internal</span>
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
@@ -927,6 +1185,29 @@
 
   </div>
   <!-- ===== /CLASSIC VIEW ===== -->
+
+  <!-- CV picker -->
+  <dialog id="cv-dialog" class="cv-dialog" aria-labelledby="cv-dialog-title">
+    <form method="dialog" class="cv-dialog-close-form">
+      <button class="cv-dialog-close" aria-label="Close">&#10005;</button>
+    </form>
+    <h2 id="cv-dialog-title">Which CV?</h2>
+    <p class="cv-dialog-sub">It downloads as a PDF and opens in a new tab.</p>
+    <div class="cv-options">
+      <a href="cv/game-cv.html" class="cv-option" target="_blank" rel="noopener">
+        <span class="cv-option-icon">🎮</span>
+        <span class="cv-option-text"><b>Game CV</b><small>Gameplay, multiplayer, LiveOps</small></span>
+      </a>
+      <a href="cv/it-cv.html" class="cv-option cv-option-it" target="_blank" rel="noopener">
+        <span class="cv-option-icon">🖥️</span>
+        <span class="cv-option-text"><b>IT CV</b><small>Windows Server, AD, Exchange</small></span>
+      </a>
+      <a href="cv/full-cv.html" class="cv-option cv-option-full" target="_blank" rel="noopener">
+        <span class="cv-option-icon">🧩</span>
+        <span class="cv-option-text"><b>Full CV</b><small>Games and IT, one document</small></span>
+      </a>
+    </div>
+  </dialog>
 
   <!-- Game Lightbox Modal -->
   <div id="game-modal-overlay" class="game-modal-overlay" role="dialog" aria-modal="true" aria-label="Game details">

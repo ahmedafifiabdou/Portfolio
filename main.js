@@ -165,7 +165,28 @@ function highlightNav() {
     if (window.scrollY >= s.offsetTop - 120) current = s.id;
   });
   navLinks.forEach(a => {
-    a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    // data-also lets one link cover neighbouring sections (Work = Games + In Dev).
+    const ids = [a.getAttribute('href').slice(1), ...(a.dataset.also || '').split(' ').filter(Boolean)];
+    a.classList.toggle('active', ids.includes(current));
+  });
+}
+
+/* ============================================
+   CV PICKER
+   One button opens a dialog listing every CV; the options are ordinary
+   cv/*.html links, so the PDF auto-download below handles them as before.
+   ============================================ */
+const cvDialog = document.getElementById('cv-dialog');
+if (cvDialog) {
+  document.querySelectorAll('[data-cv-open]').forEach(btn => {
+    btn.addEventListener('click', () => cvDialog.showModal());
+  });
+  // Clicking the backdrop (the dialog element itself, outside its content) closes it.
+  cvDialog.addEventListener('click', e => {
+    if (e.target === cvDialog) cvDialog.close();
+  });
+  cvDialog.querySelectorAll('.cv-option').forEach(opt => {
+    opt.addEventListener('click', () => cvDialog.close());
   });
 }
 
@@ -402,6 +423,24 @@ async function downloadCvPdf(pageUrl, filename) {
     const sheet = cvDoc.querySelector('.sheet');
     if (!sheet) throw new Error('CV content not found');
 
+    // Every PDF page gets the same printed margins, so the capture is of the
+    // content alone: strip the on-screen sheet's own padding and size it to
+    // the A4 text block. Each page slice is then placed inside the margins.
+    const PAGE_W_MM = 210;
+    const PAGE_H_MM = 297;
+    const MARGIN_X_MM = 14;
+    const MARGIN_Y_MM = 14;
+    const CONTENT_W_MM = PAGE_W_MM - MARGIN_X_MM * 2;
+    const CONTENT_H_MM = PAGE_H_MM - MARGIN_Y_MM * 2;
+    Object.assign(sheet.style, {
+      width: `${CONTENT_W_MM}mm`,
+      minHeight: '0',
+      margin: '0',
+      padding: '0',
+      boxShadow: 'none',
+    });
+    await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+
     // Collect the bottom edge of every block that must not be split, in
     // CSS px relative to the top of the sheet. Pages get cut at one of
     // these instead of at a fixed height, so a break never lands through
@@ -423,8 +462,15 @@ async function downloadCvPdf(pageUrl, filename) {
       };
     });
 
+    // Likewise a job's title and location line stay with at least its first
+    // bullet, so a role never ends a page as a bare header.
+    sheet.querySelectorAll('.job').forEach((job) => {
+      const firstItem = job.querySelector('li') || job;
+      keepWithNext.push({ start: edgeOf(job).top - 4, end: edgeOf(firstItem).bottom });
+    });
+
     const breakCandidates = [...sheet.querySelectorAll(
-      'p, li, dt, dd, figure, .job, .job-head, .job-sub, .chips, .two'
+      'p, li, dd, figure, .job, .chips, .two, header.top'
     )]
       .map((el) => edgeOf(el).bottom)
       .filter((y) => y > 0)
@@ -446,10 +492,8 @@ async function downloadCvPdf(pageUrl, filename) {
 
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF({ unit: 'mm', format: 'a4' });
-    const pageW = doc.internal.pageSize.getWidth();
-    const pageH = doc.internal.pageSize.getHeight();
-    const pxPerMm = canvas.width / pageW;
-    const pageHeightPx = Math.floor(pageH * pxPerMm);
+    const pxPerMm = canvas.width / CONTENT_W_MM;
+    const pageHeightPx = Math.floor(CONTENT_H_MM * pxPerMm);
 
     // CSS px -> canvas px, so the DOM-derived break points line up with
     // the rasterized image regardless of the capture scale.
@@ -458,12 +502,16 @@ async function downloadCvPdf(pageUrl, filename) {
       .sort((a, b) => a - b);
     const forcedPx = [...new Set(forcedBreaks.map((y) => Math.round(y * cssToCanvas)))]
       .sort((a, b) => a - b);
+    const blockTopsPx = [...sheet.querySelectorAll('h2, p, li, dt, dd, .job, .two, .chips, ul, dl')]
+      .map((el) => Math.max(0, Math.floor((edgeOf(el).top - 2) * cssToCanvas)))
+      .sort((a, b) => a - b);
 
     let renderedPx = 0;
     let firstPage = true;
     while (renderedPx < canvas.height) {
       const maxCut = renderedPx + pageHeightPx;
       let cut = maxCut;
+      let cleanCut = true;
 
       // A forced break inside this page wins outright — the rest of the
       // page is left blank so the marked section starts on a fresh one.
@@ -471,11 +519,11 @@ async function downloadCvPdf(pageUrl, filename) {
       if (forced) {
         cut = forced;
       } else if (maxCut < canvas.height) {
-        // Deepest safe break that still fills a reasonable amount of the
-        // page; if nothing qualifies, fall back to a hard cut.
-        const minCut = renderedPx + pageHeightPx * 0.5;
-        const safe = breaksPx.filter((y) => y > minCut && y <= maxCut);
+        // Deepest safe break on this page. A short page is better than a line
+        // of text sliced in half, so a hard cut is only the last resort.
+        const safe = breaksPx.filter((y) => y > renderedPx + 1 && y <= maxCut);
         if (safe.length) cut = safe[safe.length - 1];
+        else cleanCut = false;
       } else {
         cut = canvas.height;
       }
@@ -491,8 +539,16 @@ async function downloadCvPdf(pageUrl, filename) {
 
       if (!firstPage) doc.addPage();
       firstPage = false;
-      doc.addImage(sliceCanvas.toDataURL('image/jpeg', 0.95), 'JPEG', 0, 0, pageW, sliceHeightPx / pxPerMm);
+      doc.addImage(sliceCanvas.toDataURL('image/jpeg', 0.95), 'JPEG',
+        MARGIN_X_MM, MARGIN_Y_MM, CONTENT_W_MM, sliceHeightPx / pxPerMm);
       renderedPx = cut;
+
+      // Skip the inter-block gap after a cut so the next page starts on
+      // content, not on a stray strip of the previous block's bottom margin.
+      if (cleanCut && renderedPx < canvas.height) {
+        const nextTop = blockTopsPx.find((y) => y >= renderedPx);
+        if (nextTop !== undefined && nextTop - renderedPx < 40 * cssToCanvas) renderedPx = nextTop;
+      }
     }
 
     doc.save(filename);
@@ -658,6 +714,31 @@ const GAMES_DATA = {  '01': {
       'https://sanagamesstudio.com/temple_garden_game_image_4.png',
       'https://sanagamesstudio.com/temple_garden_game_image_5.png',
       'https://sanagamesstudio.com/temple_garden_game_image_6.png'
+    ]
+  },
+  '18': {
+    screenshots: [
+      'assets/covers/kema/01-intro.jpg',
+      'assets/covers/kema/02-sign-in.jpg',
+      'assets/covers/kema/03-home.jpg',
+      'assets/covers/kema/04-quarry.jpg',
+      'assets/covers/kema/05-board.jpg',
+      'assets/covers/kema/06-daily-gifts.jpg',
+      'assets/covers/kema/07-quests.jpg',
+      'assets/covers/kema/08-pharaohs-pass.jpg',
+      'assets/covers/kema/09-treasury.jpg',
+      'assets/covers/kema/10-profile.jpg',
+      'assets/covers/kema/11-private-hall.jpg'
+    ]
+  },
+  '19': {
+    screenshots: [
+      'assets/covers/one-state-cover.jpg'
+    ]
+  },
+  '20': {
+    screenshots: [
+      'assets/covers/cubex-cover.jpg'
     ]
   }
 };
@@ -902,8 +983,20 @@ function createCertificatePosterDataUrl(title, issuer, date, icon) {
     actions.forEach(action => {
       const a = document.createElement('a');
       a.href = action.href;
-      a.target = '_blank';
-      a.setAttribute('rel', 'noopener noreferrer');
+      const url = new URL(action.href, location.href);
+      if (url.origin === location.origin && url.pathname === location.pathname && url.hash) {
+        // In-page anchors (e.g. #liveops) close the modal and scroll instead of opening a tab.
+        // The scroll waits for closeModal to release the body's overflow lock.
+        a.addEventListener('click', e => {
+          e.preventDefault();
+          closeModal();
+          history.replaceState(null, '', url.hash);
+          document.querySelector(url.hash)?.scrollIntoView({ behavior: 'smooth' });
+        });
+      } else {
+        a.target = '_blank';
+        a.setAttribute('rel', 'noopener noreferrer');
+      }
       a.className = action.className;
       a.textContent = action.label;
       modalActions.appendChild(a);

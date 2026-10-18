@@ -11,7 +11,7 @@
   const Mode = window.PortfolioMode;
 
   /* ── CONFIG ─────────────────────────────────────── */
-  const WORLD_W   = 11500;
+  const WORLD_W   = 12100;
   const GRAVITY   = 1800;
   const SPEED     = 300;
   const SPRINT    = 1.7;
@@ -25,9 +25,9 @@
     { name: 'The Dojo — ITI', sub: '2023 – 2024',     from: 2150, to: 3600,  accent: '#f59e0b', sky: ['#100a04', '#2c1c0a'], decor: 'dunes' },
     { name: 'Training Grounds',   sub: 'Skills & tooling',      from: 3600, to: 4750,  accent: '#a855f7', sky: ['#0b0616', '#1f1139'], decor: 'grid'  },
     { name: 'Warsaw — Futuregames', sub: '2025 – 2026', from: 4750, to: 6650, accent: '#ff6b9d', sky: ['#060a12', '#1a2544'], decor: 'pines' },
-    { name: 'The Studio — 2024 Studios', sub: '2024 – Present', from: 6650, to: 9200, accent: '#00ffa3', sky: ['#04100c', '#0c2b23'], decor: 'neon' },
-    { name: 'Trophy Hall',        sub: 'Certifications',        from: 9200, to: 10600,  accent: '#ffd166', sky: ['#0d0a04', '#261e0a'], decor: 'vault' },
-    { name: 'The Beacon',         sub: 'Get in touch',          from: 10600, to: WORLD_W, accent: '#00d4ff', sky: ['#02040a', '#091629'], decor: 'space' },
+    { name: 'The Studio — 2024 Studios', sub: '2024 – Present', from: 6650, to: 9800, accent: '#00ffa3', sky: ['#04100c', '#0c2b23'], decor: 'neon' },
+    { name: 'Trophy Hall',        sub: 'Certifications',        from: 9800, to: 11200,  accent: '#ffd166', sky: ['#0d0a04', '#261e0a'], decor: 'vault' },
+    { name: 'The Beacon',         sub: 'Get in touch',          from: 11200, to: WORLD_W, accent: '#00d4ff', sky: ['#02040a', '#091629'], decor: 'space' },
   ];
 
   /* ── CAREER PILLARS ─────────────────────────────── */
@@ -211,6 +211,27 @@
       note: 'Private repository — not public',
       desc: "MENA's first reward-gaming mobile platform. Play casual games, work through a daily quest chain, redeem real brand-funded vouchers. The economy is fully server-authoritative — the client only reports raw gameplay events; Cloud Code evaluates progress and mints every coupon.",
     },
+    {
+      type: 'game', wx: 9150, elevBase: 72, offset: 0.6, collected: false, color: '#e8c977', wip: true,
+      title: 'KEMA — The Black Land', tag: 'In Development', period: 'Sana Game Studios · 2025–26',
+      coverImg: 'assets/covers/kema/kema-cover.jpg',
+      note: 'Sana Game Studios — pre-release',
+      desc: "Ancient-Egyptian multiplayer card game: raise a four-level pyramid from land cards without mirroring your rival. I moved it onto our UGS game service — accounts, Matchmaker, friends, chat — and built its LiveOps: login streaks, quests, Pharaoh's Pass and a timed-offer store.",
+    },
+    {
+      type: 'game', wx: 9400, elevBase: 116, offset: 2.2, collected: false, color: '#f59e0b', wip: true,
+      title: 'One State', tag: 'In Development', period: '2024 Studios · 2026',
+      coverImg: 'assets/covers/one-state-cover.jpg',
+      note: 'Internal project — not public',
+      desc: 'Open-world third-person mobile action in a living city. UMA character creation, a server-authoritative inventory for weapons, ammo and pickups, and the Kashkha Pass — a 30-tier battle pass delivered as an app on the in-game phone.',
+    },
+    {
+      type: 'game', wx: 9650, elevBase: 66, offset: 1.5, collected: false, color: '#a855f7', wip: true,
+      title: 'CUBEX', tag: 'In Development', period: '2024 Studios · 2026',
+      coverImg: 'assets/covers/cubex-cover.jpg',
+      note: 'Internal project — not public',
+      desc: 'Real-time mobile strategy battler on dedicated servers. Matchmaker on Edgegap with reconnect and backfill, server-authoritative card rarities, cup-ladder pass, missions, guilds and country leaderboards — all tunable live without a client build.',
+    },
   ];
 
   /* ── SKILL TOTEMS ───────────────────────────────── */
@@ -237,7 +258,7 @@
     {
       type: 'totem', wx: 4400, h: 165, color: '#a855f7', charge: 0, active: false,
       title: 'Specializations', icon: '🛠️',
-      pills: ['Gameplay Mechanics', 'VR / XR Dev', 'Narrative Design', 'AI & Combat Systems', 'Multiplayer', 'Code Architecture'],
+      pills: ['Gameplay Mechanics', 'VR / XR Dev', 'Narrative Design', 'AI & Combat Systems', 'Multiplayer', 'LiveOps & Live Services', 'Code Architecture'],
     },
     {
       type: 'totem', wx: 4620, h: 140, color: '#ff6b9d', charge: 0, active: false,
@@ -254,32 +275,32 @@
   /* ── TROPHIES (certificates) ────────────────────── */
   const TROPHIES = [
     {
-      type: 'cert', wx: 9450, found: false, color: '#ffd166', icon: '🎓',
+      type: 'cert', wx: 10050, found: false, color: '#ffd166', icon: '🎓',
       title: 'Diploma in Game Programming', issuer: 'Information Technology Institute (ITI)',
       period: 'Issued Jun 2024', skills: 'C++ · C# · Unity · Unreal · Game Programming',
       img: 'assets/certs/diploma-game-programming.jpg',
     },
     {
-      type: 'cert', wx: 9750, found: false, color: '#00d4ff', icon: '🚀',
+      type: 'cert', wx: 10350, found: false, color: '#00d4ff', icon: '🚀',
       title: '2024 NASA Space Apps Challenge', issuer: 'NASA',
       period: 'Issued Oct 2024', skills: 'Game Development · Project Management',
       img: 'assets/certs/nasa-space-apps-2024.jpg',
     },
     {
-      type: 'cert', wx: 10050, found: false, color: '#a855f7', icon: '🏆',
+      type: 'cert', wx: 10650, found: false, color: '#a855f7', icon: '🏆',
       title: 'ACT 1: Rational Game Design', issuer: 'Ubisoft – Game Creators’ Odyssey',
       period: 'May 2024', skills: 'Credential ID 106197-00002-08651',
       img: 'assets/certs/ubisoft-act1-rational-game-design.jpg',
     },
     {
-      type: 'cert', wx: 10350, found: false, color: '#a855f7', icon: '🏆',
+      type: 'cert', wx: 10950, found: false, color: '#a855f7', icon: '🏆',
       title: 'ACT 2: Rational Game Design', issuer: 'Ubisoft – Game Creators’ Odyssey',
       period: 'June 2024', skills: 'Credential ID 106197-00010-08672',
       img: 'assets/certs/ubisoft-act2-rational-game-design.jpg',
     },
   ];
 
-  const BEACON = { wx: 11000, color: '#00d4ff', reached: false };
+  const BEACON = { wx: 11600, color: '#00d4ff', reached: false };
 
   const ALL_PLATFORMS = [...MILESTONES];
 
