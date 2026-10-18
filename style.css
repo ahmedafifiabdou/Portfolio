@@ -2030,9 +2030,27 @@ section.section-fade.is-active {
 .cert-card { position: relative; }
 
 .cert-card .tap-hint {
-  right: 0.75rem;
-  bottom: 0.75rem;
+  position: static;
+  display: flex;
+  width: fit-content;
+  margin-top: 0.75rem;
 }
+
+/* LiveOps screenshots: whole image is the zoom button. */
+.lo-zoom {
+  position: relative;
+  display: block;
+  padding: 0;
+  background: none;
+  border: 0;
+  border-radius: 12px;
+  cursor: zoom-in;
+  transition: transform 0.2s ease;
+}
+.lo-zoom:hover { transform: translateY(-3px); }
+.lo-zoom:hover img { border-color: rgba(245, 158, 11, 0.6); }
+.lo-zoom:focus-visible { outline: 2px solid var(--neon); outline-offset: 3px; }
+.lo-zoom .tap-hint { right: 50%; transform: translateX(50%); white-space: nowrap; }
 
 @media (prefers-reduced-motion: reduce) {
   .tap-hint { animation: none; }
@@ -2295,7 +2313,7 @@ section.section-fade.is-active {
   border: 1px solid rgba(245, 158, 11, 0.25);
 }
 .lo-shot figcaption {
-  margin-top: .75rem;
+  margin-top: 1.25rem;
   font-family: var(--font-mono);
   font-size: .78rem;
   color: var(--text-muted);

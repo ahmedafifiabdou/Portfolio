@@ -1143,8 +1143,26 @@ function createCertificatePosterDataUrl(title, issuer, date, icon) {
     });
   });
 
+  /* LiveOps screenshots open the gallery already zoomed in on the one pressed. */
+  const loShots = [...document.querySelectorAll('.lo-zoom')];
+  loShots.forEach((btn, i) => {
+    addTapHint(btn, 'zoom');
+    btn.addEventListener('click', () => {
+      openModalContent({
+        title: 'KEMA — LiveOps on screen',
+        description: document.querySelector('.lo-shot figcaption')?.textContent.trim() || '',
+        tags: ['KEMA', 'LiveOps'],
+        actions: [],
+        screenshots: loShots.map(b => b.querySelector('img').getAttribute('src')),
+      });
+      goTo(i);
+      requestAnimationFrame(() => toggleActiveScreenshotFullscreen());
+    });
+  });
+
   document.querySelectorAll('.cert-card').forEach(card => {
-    addTapHint(card, 'view cert');
+    // Inside the text column, so the badge sits under the details instead of over them.
+    addTapHint(card.querySelector('.cert-body') || card, 'view cert');
     card.setAttribute('role', 'button');
     card.setAttribute('tabindex', '0');
     card.addEventListener('click', e => {
